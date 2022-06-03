@@ -1,7 +1,6 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
-
 import Actions from './Actions.js'
 
 const row = (bill) => {
@@ -20,8 +19,28 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-    // on inverse l'ordre d'apparition des notes de 
-  return (data && data.length) ? data.reverse().map(bill => row(bill)).join("") : ""
+
+    //on ajoute un 0 devant le jour
+    // data.forEach((el) => {
+    //     let words = el.date
+    //     words = words.split(' ');
+    //     if (words[0].length <2){
+    //         words[0]= 0 + words[0]
+    //         el.date = words.join(' ')
+    //         console.log(words.join(' '));
+    //     }
+    // });
+
+    // on inverse l'ordre d'apparition des notes de frais
+    
+    console.log(data);
+  //  console.log(data[3].date);
+   // data[8].date = '2 May. 22'
+  //  data[3].date = '24 Jun. 22'
+    console.log(data);
+    const antiChrono = (a, b) => ((new Date(a.date) < new Date(b.date)) ? 1 : -1);
+    const dataSorted = data.sort(antiChrono)
+  return (data && data.length) ? dataSorted.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
