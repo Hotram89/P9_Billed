@@ -21,6 +21,7 @@ export default class NewBill {
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length-1];
 
+    //verifie si c'est une image
     const regexImgAccepted = new RegExp(/\.(jpe?g|png)$/i);
     if (!regexImgAccepted.test(file.name)) return false;
 

@@ -20,15 +20,15 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
+
     if (data && data.length) {
-   
-    //transformer une date en format numerique
-    data.sort(function(a,b){
-        return new Date(b.dateEN) - new Date(a.dateEN);
-    })
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+        const dateSorted = data.sort((a,b) =>{ return new Date(b.dateEN) - new Date(a.dateEN)});
+        
+            return  dateSorted.map(bill => row(bill)).join("");
 }
+else return ''
 }
+
 
 export default ({ data: bills, loading, error }) => {
   
