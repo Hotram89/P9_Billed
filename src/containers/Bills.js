@@ -7,7 +7,6 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
-    console.log(this.store);
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
     if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
     const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
