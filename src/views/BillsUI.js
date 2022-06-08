@@ -20,8 +20,15 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+
+    if (data && data.length) {
+        const dateSorted = data.sort((a,b) =>{ return new Date(b.dateEN) - new Date(a.dateEN)});
+        
+            return  dateSorted.map(bill => row(bill)).join("");
 }
+else return ''
+}
+
 
 export default ({ data: bills, loading, error }) => {
   const modal = () => (`
@@ -29,7 +36,7 @@ export default ({ data: bills, loading, error }) => {
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Justificatif</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Justificatiftiftif</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

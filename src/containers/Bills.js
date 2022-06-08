@@ -35,9 +35,11 @@ export default class {
       .then(snapshot => {
         const bills = snapshot
           .map(doc => {
+              console.log(doc);
             try {
               return {
                 ...doc,
+                dateEN: doc.date,
                 date: formatDate(doc.date),
                 status: formatStatus(doc.status)
               }
