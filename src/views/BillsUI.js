@@ -1,6 +1,7 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
+
 import Actions from './Actions.js'
 
 const row = (bill) => {
@@ -19,37 +20,24 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-
-    //on ajoute un 0 devant le jour
-    // data.forEach((el) => {
-    //     let words = el.date
-    //     words = words.split(' ');
-    //     if (words[0].length <2){
-    //         words[0]= 0 + words[0]
-    //         el.date = words.join(' ')
-    //         console.log(words.join(' '));
-    //     }
-    // });
-
-    // on inverse l'ordre d'apparition des notes de frais
-    
-    console.log(data);
-  //  console.log(data[3].date);
-   // data[8].date = '2 May. 22'
-  //  data[3].date = '24 Jun. 22'
-    console.log(data);
-    const antiChrono = (a, b) => ((new Date(a.date) < new Date(b.date)) ? 1 : -1);
-    const dataSorted = data.sort(antiChrono)
-  return (data && data.length) ? dataSorted.map(bill => row(bill)).join("") : ""
+    if (data && data.length) {
+   
+    //transformer une date en format numerique
+    data.sort(function(a,b){
+        return new Date(b.dateEN) - new Date(a.dateEN);
+    })
+  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+}
 }
 
 export default ({ data: bills, loading, error }) => {
+  
   const modal = () => (`
     <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Justificatif</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Justificatiftiftif</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
