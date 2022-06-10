@@ -16,16 +16,6 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
-<<<<<<< HEAD
-    e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    console.log(e.target.value);
-    const filePath = e.target.value.split(/\\/g)
-    console.log(filePath);
-    const fileName = filePath[filePath.length-1]
-    console.log('le fileName cest: ' +fileName);
-    const formData = new FormData()
-=======
       e.preventDefault();
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
     const filePath = e.target.value.split(/\\/g);
@@ -37,7 +27,6 @@ export default class NewBill {
 
 
     const formData = new FormData();
->>>>>>> issue#2
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)

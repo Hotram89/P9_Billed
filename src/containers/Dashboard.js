@@ -28,7 +28,6 @@ export const filteredBills = (data, status) => {
 }
 
 export const card = (bill) => {
-    console.log(bill);
   const firstAndLastNames = bill.email.split('@')[0]
   const firstName = firstAndLastNames.includes('.') ?
     firstAndLastNames.split('.')[0] : ''
@@ -73,6 +72,11 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
+    this.billStatus = {
+        1: false,
+        2: false,
+        3: false,
+    }
     $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
     $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
     $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
@@ -132,10 +136,13 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
+  //permet de voir le detail des notes de frais quand on clique dessus
   handleShowTickets(e, bills, index) {
-      console.log(bills);
+      //si on a pas encore cliquer alors this.index est undefined, on passe this.counter a 0
     if (this.counter === undefined || this.index !== index) this.counter = 0
+    // et si le counter est encore a 0, on vient donné l'index 1 2 ou 3 en fonction de où on clique
     if (this.index === undefined || this.index !== index) this.index = index
+    
     if (this.counter % 2 === 0) {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
