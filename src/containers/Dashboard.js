@@ -131,7 +131,7 @@ export default class {
     this.updateBill(newBill)
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
-
+//permet de voir le detail des notes de frais quand on clique dessus
   handleShowTickets(e, bills, index) {
       console.log(bills);
     if (this.counter === undefined || this.index !== index) this.counter = 0
@@ -149,7 +149,10 @@ export default class {
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+      $(`#open-bill${bill.id}`).click((e) => {
+        e.stopImmediatePropagation();
+        this.handleEditTicket(e, bill, bills)
+      })
     })
 
     return bills
