@@ -18,6 +18,21 @@ const row = (bill) => {
     `)
   }
 
+// const rows = (data) => {
+
+//     if(data && data.length) {
+//         const dataSorted = data.sort((a, b) => {
+          
+//             return new Date(b.dateEN) - new Date(a.dateEN)
+//         });
+
+//         return dataSorted.map(bill => row(bill)).join("")
+//     }
+//   return "";
+// }
+
+
+
 const rows = (data) => {
 
     if(data && data.length) {
