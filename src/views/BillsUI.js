@@ -1,7 +1,6 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
-
 import Actions from './Actions.js'
 
 const row = (bill) => {
@@ -9,7 +8,7 @@ const row = (bill) => {
     <tr>
       <td>${bill.type}</td>
       <td>${bill.name}</td>
-      <td>${bill.date}</td>
+      <td aria-label="Date">${bill.date}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
       <td>
@@ -20,8 +19,17 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-    // on inverse l'ordre d'apparition des notes de 
-  return (data && data.length) ? data.reverse().map(bill => row(bill)).join("") : ""
+  
+    if(data && data.length) {
+        const dataSorted = data.sort((a, b) => {
+          
+            return new Date(b.dateEN) - new Date(a.dateEN)
+        });
+
+        return dataSorted.map(bill => row(bill)).join("")
+    }
+  return "";
+
 }
 
 export default ({ data: bills, loading, error }) => {
