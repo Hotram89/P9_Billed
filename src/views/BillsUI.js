@@ -19,7 +19,7 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-
+  
     if(data && data.length) {
         const dataSorted = data.sort((a, b) => {
           
@@ -29,10 +29,10 @@ const rows = (data) => {
         return dataSorted.map(bill => row(bill)).join("")
     }
   return "";
+
 }
 
 export default ({ data: bills, loading, error }) => {
-  
   const modal = () => (`
     <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
