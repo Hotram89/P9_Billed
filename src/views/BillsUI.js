@@ -1,7 +1,6 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
-import {formatDateFrench2Digit} from '../app/format.js'
 import Actions from './Actions.js'
 
 const row = (bill) => {
@@ -23,8 +22,7 @@ const rows = (data) => {
 
     if(data && data.length) {
         const dataSorted = data.sort((a, b) => {
-           // formatDateFrench2Digit(a.dateEN);
-           // formatDateFrench2Digit(b.dateEN)
+          
             return new Date(b.dateEN) - new Date(a.dateEN)
         });
 
