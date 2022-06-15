@@ -113,3 +113,11 @@ tr td:nth-of-type(5) {
 .bill-proof-container {
   overflow: scroll;
 }
+
+/************************/
+/******* MODIF CSS ******/
+/************************/
+.bill-proof-container img {
+    object-fit: cover;
+    width: 100%;
+}

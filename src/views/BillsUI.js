@@ -1,7 +1,7 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
-
+import {formatDateFrench2Digit} from '../app/format.js'
 import Actions from './Actions.js'
 
 const row = (bill) => {
@@ -9,7 +9,7 @@ const row = (bill) => {
     <tr>
       <td>${bill.type}</td>
       <td>${bill.name}</td>
-      <td>${bill.date}</td>
+      <td aria-label="Date">${bill.date}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
       <td>
@@ -21,22 +21,26 @@ const row = (bill) => {
 
 const rows = (data) => {
 
-    if (data && data.length) {
-        const dateSorted = data.sort((a,b) =>{ return new Date(b.dateEN) - new Date(a.dateEN)});
-        
-            return  dateSorted.map(bill => row(bill)).join("");
-}
-else return ''
-}
+    if(data && data.length) {
+        const dataSorted = data.sort((a, b) => {
+           // formatDateFrench2Digit(a.dateEN);
+           // formatDateFrench2Digit(b.dateEN)
+            return new Date(b.dateEN) - new Date(a.dateEN)
+        });
 
+        return dataSorted.map(bill => row(bill)).join("")
+    }
+  return "";
+}
 
 export default ({ data: bills, loading, error }) => {
+  
   const modal = () => (`
     <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Justificatiftiftif</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Justificatif</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

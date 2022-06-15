@@ -67,7 +67,7 @@ export default (bill) => {
       </div>
       <div class="row">
         <div class="col-sm">
-          <label for="file" class="bold-label">Justificatifeuh</label>
+          <label for="file" class="bold-label">Justificatif</label>
             <div class='input-field input-flex file-flex'>
             <span id="file-name-admin">${bill.fileName}</span>
             <div class='icons-container'>

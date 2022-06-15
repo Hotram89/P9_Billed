@@ -26,8 +26,12 @@ export const filteredBills = (data, status) => {
       return selectCondition
     }) : []
 }
-
+/**
+ * card sert a constuire les encarts bleus a gauche du dashboard
+ * ici on return leur html 
+ */
 export const card = (bill) => {
+    console.log(bill);
   const firstAndLastNames = bill.email.split('@')[0]
   const firstName = firstAndLastNames.includes('.') ?
     firstAndLastNames.split('.')[0] : ''
@@ -52,10 +56,12 @@ export const card = (bill) => {
   `)
 }
 
+//fonction ternaire qui sert a verifier qu'il y a bien des notes de frais existantes, si oui on contruits les card
 export const cards = (bills) => {
   return bills && bills.length ? bills.map(bill => card(bill)).join("") : ""
 }
 
+//on regarde l'index (1 2 ou 3) et on vient ranger les bill dans 3 sous catégories
 export const getStatus = (index) => {
   switch (index) {
     case 1:
@@ -67,16 +73,15 @@ export const getStatus = (index) => {
   }
 }
 
+/**
+ * class  pour afficher les tickets en détails quand on clique sur la card bleue
+ */
 export default class {
   constructor({ document, onNavigate, store, bills, localStorage }) {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
-    this.billStatus = {
-        1: false,
-        2: false,
-        3: false,
-    }
+
     $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
     $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
     $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
@@ -91,10 +96,11 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
-      console.log(bill);
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
+    console.log(this.id);
     if (this.counter % 2 === 0) {
+        console.log('counter');
       bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
       })
@@ -103,6 +109,8 @@ export default class {
       $('.vertical-navbar').css({ height: '150vh' })
       this.counter ++
     } else {
+        console.log('not counter');
+
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
 
       $('.dashboard-right-container div').html(`
@@ -146,7 +154,8 @@ export default class {
     if (this.counter % 2 === 0) {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
-        .html(cards(filteredBills(bills, getStatus(this.index))))
+
+    .html(cards(filteredBills(bills, getStatus(this.index))))
       this.counter ++
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
@@ -156,10 +165,11 @@ export default class {
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
-    })
-
-    return bills
+      $(`#open-bill${bill.id}`).click((e) => {
+        e.stopImmediatePropagation();
+        this.handleEditTicket(e, bill, bills)
+        })
+    });
 
   }
 
