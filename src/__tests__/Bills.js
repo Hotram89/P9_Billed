@@ -120,7 +120,6 @@ describe("Given I am connected as an employee", () => {
        });
 
        document.body.innerHTML = BillsUI({ data: bills });
-       //   //mock handleClickNewBillMock
        const buttonNewBill = screen.getByTestId("btn-new-bill");
 
        const handleClickNewBill = jest.fn((e) =>
