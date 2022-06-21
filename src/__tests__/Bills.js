@@ -134,3 +134,24 @@ describe("Given I am connected as an employee", () => {
      });
   });
 });
+
+
+//test d'intégration GET
+describe("Given I am connected as an employee", () => {
+  describe("When I navigate to Bills Page", () => {
+    test("fetches bills from mock API GET", async () => {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ type: "employee", email: "a@a" })
+      );
+      const root = document.createElement("div");
+      root.setAttribute("id", "root");
+      document.body.append(root);
+      router();
+      window.onNavigate(ROUTES_PATH.Bills);
+      await waitFor(() => screen.getAllByText("Mes notes de frais"))
+      const tableTitleType = await screen.getByText("Type")
+      expect(tableTitleType).toBeTruthy()
+    });
+  });
+});
