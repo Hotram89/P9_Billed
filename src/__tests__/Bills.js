@@ -11,6 +11,8 @@ import { formatDate } from "../app/format.js";
 import Bills from "../containers/Bills.js";
 import router from "../app/Router.js";
 import NewBillUI from "../views/NewBillUI.js";
+import { mockStore, mockCorruptedStore } from "../__mocks__/store.js";
+
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -135,23 +137,28 @@ describe("Given I am connected as an employee", () => {
   });
 });
 
-
 //test d'intégration GET
 describe("Given I am connected as an employee", () => {
-  describe("When I navigate to Bills Page", () => {
-    test("fetches bills from mock API GET", async () => {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ type: "employee", email: "a@a" })
-      );
-      const root = document.createElement("div");
-      root.setAttribute("id", "root");
-      document.body.append(root);
-      router();
-      window.onNavigate(ROUTES_PATH.Bills);
-      await waitFor(() => screen.getAllByText("Mes notes de frais"))
-      const tableTitleType = await screen.getByText("Type")
-      expect(tableTitleType).toBeTruthy()
+    describe("When I navigate to Bills Page", () => {
+      test("fetches bills from mock API GET", async () => {
+  
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ type: "Employee", email: "a@a" })
+        );
+        const root = document.createElement("div");
+        root.setAttribute("id", "root");
+        document.body.append(root);
+        // Use mock store to verify if data is fetched
+      const store = mockStore;
+        router();
+        window.onNavigate(ROUTES_PATH.Bills);
+        await waitFor(() => 
+        expect(screen.getAllByText("Envoyer une note de frais")).toBeTruthy()
+        )
+      //   const tableTitleType = await screesn.getByText("Type")
+      //   expect(tableTitleType).toBeTruthy()
+      });
     });
   });
-});
+  
