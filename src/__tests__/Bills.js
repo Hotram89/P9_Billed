@@ -7,11 +7,10 @@ import BillsUI from "../views/BillsUI.js";
 import { bills } from "../fixtures/bills.js";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
-import { formatDate } from "../app/format.js";
 import Bills from "../containers/Bills.js";
 import router from "../app/Router.js";
-import NewBillUI from "../views/NewBillUI.js";
 import { mockStore, mockCorruptedStore } from "../__mocks__/store.js";
+
 
 
 describe("Given I am connected as an employee", () => {
@@ -101,39 +100,7 @@ describe("Given I am connected as an employee", () => {
       
     });
 
-    /**
-     * Open "nouvelle note de frais"
-     * 
-     */
-     test("When I click on Nouvelle note de frais button, go to NewBill", () => {
-       // DOM elements
-
-       const onNavigate = (pathname) => {
-         document.body.innerHTML = ROUTES({ pathname });
-       };
-
-       const store = null
-
-       const billsMock = new Bills({
-         document,
-         onNavigate,
-         store,
-         localStorage: window.localStorage,
-       });
-
-       document.body.innerHTML = BillsUI({ data: bills });
-       const buttonNewBill = screen.getByTestId("btn-new-bill");
-
-       const handleClickNewBill = jest.fn((e) =>
-         billsMock.handleClickNewBill(e)
-       );
-
-       buttonNewBill.addEventListener("click", handleClickNewBill);
-       fireEvent.click(buttonNewBill);
-       expect(handleClickNewBill).toHaveBeenCalled();
-       const noteDeFrais = screen.getByText("Envoyer une note de frais");
-       expect(noteDeFrais).toBeTruthy();
-     });
+    
   });
 });
 
@@ -141,7 +108,7 @@ describe("Given I am connected as an employee", () => {
 describe("Given I am connected as an employee", () => {
     describe("When I navigate to Bills Page", () => {
       test("fetches bills from mock API GET", async () => {
-  
+ 
         localStorage.setItem(
           "user",
           JSON.stringify({ type: "Employee", email: "a@a" })
@@ -149,16 +116,51 @@ describe("Given I am connected as an employee", () => {
         const root = document.createElement("div");
         root.setAttribute("id", "root");
         document.body.append(root);
-        // Use mock store to verify if data is fetched
-      const store = mockStore;
+
         router();
         window.onNavigate(ROUTES_PATH.Bills);
-        await waitFor(() => 
-        expect(screen.getAllByText("Envoyer une note de frais")).toBeTruthy()
-        )
-      //   const tableTitleType = await screesn.getByText("Type")
-      //   expect(tableTitleType).toBeTruthy()
+      //  await waitFor(() =>  screen.getByText("Mes notes de frais"))
+
+        const noteDeFrais = await screen.getByText("Mes notes de frais")
+        expect(noteDeFrais).toBeTruthy()
+        const tableTitleType = await screen.getByText("Type")
+        expect(tableTitleType).toBeTruthy()
       });
     });
   });
-  
+
+describe("Given I am connected as an employee", () => {
+    /**
+     * Open "nouvelle note de frais"
+     * 
+     */
+     test("When I click on Nouvelle note de frais button, go to NewBill", () => {
+        // DOM elements
+
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname });
+        };
+
+        const store = null
+
+        const billsMock = new Bills({
+          document,
+          onNavigate,
+          store,
+          localStorage: window.localStorage,
+        });
+
+        document.body.innerHTML = BillsUI({ data: bills });
+        const buttonNewBill = screen.getByTestId("btn-new-bill");
+
+        const handleClickNewBill = jest.fn((e) =>
+          billsMock.handleClickNewBill(e)
+        );
+
+        buttonNewBill.addEventListener("click", handleClickNewBill);
+        fireEvent.click(buttonNewBill);
+        expect(handleClickNewBill).toHaveBeenCalled();
+        const noteDeFrais = screen.getByText("Envoyer une note de frais");
+        expect(noteDeFrais).toBeTruthy();
+      });
+})
