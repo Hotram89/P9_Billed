@@ -17,19 +17,23 @@ export default class NewBill {
   }
   handleChangeFile = e => {
       e.preventDefault();
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
+    const inputFile =  this.document.querySelector(`input[data-testid="file"]`);
+    const file = inputFile.files[0];
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length-1];
 
     //verifie si c'est une image
     const regexImgAccepted = new RegExp(/\.(jpe?g|png)$/i);
-    if (!regexImgAccepted.test(file.name)) return false;
+    let isValid = regexImgAccepted.test(file.name);
+    console.log(isValid);
 
-
-    const formData = new FormData();
-    const email = JSON.parse(localStorage.getItem("user")).email
-    formData.append('file', file)
-    formData.append('email', email)
+    const errorMessage = document.querySelector('.errorMessage')
+    let correct = errorMessage.classList.contains('activ')
+    if (isValid) {
+        const formData = new FormData();
+        const email = JSON.parse(localStorage.getItem("user")).email
+        formData.append('file', file)
+        formData.append('email', email)
 
     this.store
       .bills()
@@ -44,6 +48,23 @@ export default class NewBill {
         this.fileUrl = fileUrl
         this.fileName = fileName
       }).catch(error => console.error(error))
+      
+       
+        if (correct) {
+            errorMessage.classList.remove('activ')
+        }
+      //retirer la classe error
+    } else {
+        inputFile.value = "";
+        if (correct.length != 0) {
+            errorMessage.classList.add('activ')
+        }
+        //ajouter une classe error
+    }
+    
+
+
+    
   }
   handleSubmit = e => {
     e.preventDefault()

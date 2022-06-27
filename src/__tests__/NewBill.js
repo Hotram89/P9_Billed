@@ -91,26 +91,29 @@ describe("Given I am connected as an employee", () => {
         //mock la fonction appelée
         const handleChangeFileMock = jest.fn(newBill.handleChangeFile);
         //recupere l'input du fichier a ajouter
-        const inputFileButton = screen.getByTestId("file");
-        inputFileButton.addEventListener("change", handleChangeFileMock);
+        const inputFile = screen.getByTestId("file");
+        const errorMessage = screen.getByTestId("error")
+        inputFile.addEventListener("change", handleChangeFileMock);
   
         //   mock un fichier
         const file = new File(["myProof.doc"], "myProof.doc", {
           type: "image/jpg",
         });
   
-        fireEvent.change(inputFileButton, {
+        fireEvent.change(inputFile, {
           target: {
             files: [file],
           },
         });
-  
+        //est ce que que inputFile.value est vide
         expect(handleChangeFileMock).toHaveBeenCalled();
+        expect(errorMessage.contains("activ")).toBe(true); 
+
       });
   })
 })
 
-// test d'intégration GET
+// test d'intégration POST
 describe("Given I am a user connected as Employee", () => {
     describe("When I navigate to NewBills", () => {
       test("fetches bills from mock API POST", async () => {
@@ -131,6 +134,7 @@ describe("Given I am a user connected as Employee", () => {
         expect(contentRefused).toBeTruthy()
         expect(screen.getByTestId("big-billed-icon")).toBeTruthy()
       })
+      
     describe("When an error occurs on API", () => {
       beforeEach(() => {
         jest.spyOn(mockStore, "bills")
