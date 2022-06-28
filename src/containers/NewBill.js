@@ -25,7 +25,6 @@ export default class NewBill {
     //verifie si c'est une image
     const regexImgAccepted = new RegExp(/\.(jpe?g|png)$/i);
     let isValid = regexImgAccepted.test(file.name);
-    console.log(isValid);
 
     const errorMessage = document.querySelector('.errorMessage')
     let correct = errorMessage.classList.contains('activ')
