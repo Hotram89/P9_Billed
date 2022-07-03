@@ -11,8 +11,6 @@ import Bills from "../containers/Bills.js";
 import router from "../app/Router.js";
 import mockStore from "../__mocks__/store.js";
 
-
-
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     /**
@@ -39,6 +37,25 @@ describe("Given I am connected as an employee", () => {
       //to-do write expect expression
       expect(windowIcon.classList.contains("active-icon")).toBe(true);
     });
+    test("Then bills are displayed on the page", async () => {
+        const onNavigate = (pathname) => {
+            document.body.innerHTML = ROUTES({ pathname })
+          }
+      
+          const bills = new Bills({
+            document,
+            onNavigate,
+            store: mockStore,
+            localStorage: window.localStorage,
+          })
+      
+          const fetchedBills = await bills.getBills()
+          const billsList = await mockStore.bills().list()
+      
+          document.body.innerHTML = BillsUI({ data: fetchedBills })
+      
+          expect(fetchedBills.length).toBe(4)
+    })
     /**
      *
      * Bills are sorted
@@ -105,57 +122,7 @@ describe("Given I am connected as an employee", () => {
   });
 });
 
-//test d'intégration GET
-// describe("Given I am connected as an employee", () => {
-//     describe("When I navigate to Bills Page", () => {
-//       test("fetches bills from mock API GET", async () => {
 
-//         const noteDeFrais = await screen.getByText("Mes notes de frais")
-//         expect(noteDeFrais).toBeTruthy()
- 
-//         const dataFetch = await screen.getByText("Hôtel et logement")
-//         expect(dataFetch).toBeTruthy()
- 
-//         const tableTitleType = await screen.getByText("Type")
-//         expect(tableTitleType).toBeTruthy()
-    
-//       });
-//     })
-
-//     describe("When an error appears on Bills page", () => {
-//         beforeEach(() => {
-//             jest.spyOn(mockStore, "bills")
-
-//             Object.defineProperty(window, "localStorage", { value: localStorageMock });
-//             window.localStorage.setItem(
-//               "user",
-//               JSON.stringify({
-//                 type: "Employee",
-//                 email: "a@a",
-//               })
-//             );
-//             const root = document.createElement("div");
-//             root.setAttribute("id", "root");
-//             document.body.appendChild(root);
-//             router();
-//     })
-//      //Test erreur 404
-//      test("fetch fails and ERROR 404 message appears ", async () => {
-//         expect(bills).toBeDefined();
-//         mockStore.bills.mockImplementationOnce(() => {
-//             Promise.reject(new Error("Erreur 404"))
-//           });
-//           window.onNavigate(ROUTES_PATH.Bills)
-//         const message = await screen.getByText(/Erreur 404/)
-//         expect(message).toBeTruthy()  
-//   });
-
-
-     
-// })
-// })
-
-//copier coller de dashboard
 // test d'intégration GET
 describe("Given I am a user connected as Employe", () => {
     describe("When I navigate to Bills", () => {

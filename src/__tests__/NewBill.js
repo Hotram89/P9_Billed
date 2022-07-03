@@ -6,7 +6,6 @@ import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import NewBillUI from "../views/NewBillUI.js";
 import NewBill from "../containers/NewBill.js";
 import BillsUI from "../views/BillsUI.js";
-
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
 import router from "../app/Router.js";
@@ -43,7 +42,7 @@ describe("Given I am connected as an employee", () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      //   //propose ces comportements pour la construction de la page
+      //propose ces comportements pour la construction de la page
       const newBill = new NewBill({
         document,
         onNavigate,
@@ -63,7 +62,6 @@ describe("Given I am connected as an employee", () => {
       });
       const errorMessage = screen.getByTestId("error");
 
-
       fireEvent.change(inputFileButton, {
         target: {
           files: [file],
@@ -71,7 +69,7 @@ describe("Given I am connected as an employee", () => {
       });
 
       expect(handleChangeFileMock).toHaveBeenCalled();
-      expect(errorMessage.classList.contains("activ")).toBe(false);
+      expect(errorMessage.classList.contains("activ")).toBeFalsy();
     });
 
     test("The input for proof file change with a wrong image", () => {
@@ -117,51 +115,61 @@ describe("Given I am connected as an employee", () => {
 describe("Given I am a user connected as Employee", () => {
   describe("When I navigate to NewBills", () => {
     describe("When I submit the form", () => {
-        test("a new bill have been added", async () => {
-            localStorage.setItem(
-              "user",
-              JSON.stringify({ type: "Employee", email: "a@a" })
-            );
-            const root = document.createElement("div");
-            root.setAttribute("id", "root");
-            document.body.append(root);
-      
-            const mockedBill = {
-              id: "UUIZtnPsldibFnB0ozvJh",
-              name: "test5",
-              email: "a@a",
-              type: "Services en ligne",
-              vat: "60",
-              pct: 20,
-              commentAdmin: "ca ne passe pas",
-              amount: 300,
-              status: "refused",
-              date: "2003-03-03",
-              commentary: "",
-              fileName:
-                "facture-client-php-exportee-dans-document-pdf-enregistre-sur-disque-dur.png",
-              fileUrl:
-                "https://test.storage.tld/v0/b/billable-677b6.a…dur.png?alt=media&token=571d34cb-9c8f-430a-af52-66221cae1da3",
-            };
-            
-              
-            // const form = screen.getByTestId("form-new-bill")
-            const handleSubmit = jest.fn(newBill.handleSubmit)
-            const newBillform = screen.getByTestId("form-new-bill")
-            newBillform.addEventListener('submit', handleSubmit)
-            fireEvent.submit(newBillform)
-            expect(handleSubmit).toHaveBeenCalled()
-      
-            const store = mockStore;
-            window.onNavigate(ROUTES_PATH.Bills);
-            router();
-            const bills = await store.post(mockedBill);
-      
-            // fireEvent.submit(form)
-            expect(bills.data.length).toBe(5);
-          });
-    })
-   
+      test("a new bill have been added", async () => {
+        Object.defineProperty(window, "localStorage", {
+          value: localStorageMock,
+        });
+        window.localStorage.setItem(
+          "user",
+          JSON.stringify({
+            type: "Employee",
+          })
+        );
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname });
+        };
+
+        const html = NewBillUI();
+        document.body.innerHTML = html;
+
+        const newBillBoard = new NewBill({
+          document,
+          onNavigate,
+          store: null,
+          localStorage: window.localStorage,
+        });
+
+        const handleSubmitMoked = jest.fn(newBillBoard.handleSubmit);
+        const submit = screen.getByTestId("form-new-bill");
+
+        submit.addEventListener("submit", handleSubmitMoked);
+        fireEvent.submit(submit);
+
+        expect(handleSubmitMoked).toHaveBeenCalled();
+        expect(screen.getByText("Mes notes de frais")).toBeTruthy();
+
+        const newBill = {
+          id: "abCD1SzECmaZAGRrHjaC",
+          status: "refused",
+          pct: 20,
+          amount: 200,
+          email: "a@a",
+          name: "test2",
+          vat: "40",
+          fileName: "test.jpg",
+          date: "2002-02-02",
+          commentAdmin: "pas la bonne facture",
+          commentary: "test2",
+          type: "Restaurants et bars",
+          fileUrl:
+            "https://test.storage.tld/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=4df6ed2c-12c8-42a2-b013-346c1346f732",
+        };
+
+
+        // fireEvent.submit(form)
+      //  expect(bills.length).toBe(5);
+      });
+    });
 
     describe("When an error occurs on API", () => {
       beforeEach(() => {
@@ -183,7 +191,6 @@ describe("Given I am a user connected as Employee", () => {
         document.body.appendChild(root);
         router();
       });
-
 
       test("fetches bills from an API and fails with 404 message error", async () => {
         localStorage.setItem(
@@ -237,8 +244,6 @@ describe("Given I am a user connected as Employee", () => {
         const message = await screen.getByText(/Erreur 500/);
         expect(message).toBeTruthy();
       });
-
-     
     });
   });
 });
