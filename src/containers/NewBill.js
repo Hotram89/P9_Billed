@@ -21,7 +21,13 @@ export default class NewBill {
     const file = inputFile.files[0];
     const filePath = e.target.value.split(/\\/g);
     const fileName = filePath[filePath.length-1];
-
+    /**
+     * 
+     * 
+     * BUG Type de fichier pour Justificatif
+     * 
+     * 
+     */
     //verifie si c'est une image
     const regexImgAccepted = new RegExp(/\.(jpe?g|png)$/i);
     let isValid = regexImgAccepted.test(file.name);
@@ -54,8 +60,14 @@ export default class NewBill {
         }
       //retirer la classe error
     } else {
+        /**
+         * ne mets aucun fichier
+         */
         inputFile.value = "";
         if (correct.length != 0) {
+            /**
+             * et ajoute une message d'erreur
+             */
             errorMessage.classList.add('activ')
         }
         //ajouter une classe error

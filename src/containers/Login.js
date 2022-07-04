@@ -15,8 +15,12 @@ export default class Login {
     const formAdmin = this.document.querySelector(`form[data-testid="form-admin"]`)
     formAdmin.addEventListener("submit", this.handleSubmitAdmin)
   }
+  
   handleSubmitEmployee = e => {
     e.preventDefault()
+    /**
+   * BUG Login
+   */
     const user = {
       type: "Employee",
       email: e.target.querySelector(`input[data-testid="employee-email-input"]`).value,

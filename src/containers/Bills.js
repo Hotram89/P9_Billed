@@ -39,6 +39,9 @@ export default class {
             try {
               return {
                 ...doc,
+                /**
+                 * ajout de dateEN pour Bug dates
+                 */
                 dateEN: doc.date,
                 date: formatDate(doc.date),
                 status: formatStatus(doc.status)

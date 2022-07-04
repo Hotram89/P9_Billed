@@ -145,6 +145,12 @@ export default class {
       this.counter ++
     }
 
+    /**
+     * 
+     * Bug de listes déroulantes 
+     * 
+     * 
+     */
     bills.forEach(bill => {
       $(`#open-bill${bill.id}`).click((e) => {
         e.stopImmediatePropagation();

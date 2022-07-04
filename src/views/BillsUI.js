@@ -20,7 +20,9 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-
+/**
+ * Bug dates
+ */
     if (data && data.length) {
         const dateSorted = data.sort((a,b) =>{ return new Date(b.dateEN) - new Date(a.dateEN)});
         
